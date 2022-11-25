@@ -17,7 +17,7 @@ public typealias PreSave = () -> Void
 /// When calling save function,  will call arcore function to host anchors
 public typealias Save = ([ARAnchor]) -> Void
 /// Load existing map
-public typealias Load = (ARWorldMap?, [CloudARAnchor]?, Bool) -> Void
+public typealias Load = (ARWorldMap?, [CloudARAnchor]?, PositioningEngineType) -> Void
 /// Add new model to the scene
 public typealias AddModel = ((ModelWithEntity) -> Void)
 /// This function will be called by ARSessionDelegate
