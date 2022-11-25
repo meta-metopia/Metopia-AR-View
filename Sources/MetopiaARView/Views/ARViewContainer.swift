@@ -67,9 +67,9 @@ public struct ARViewContainer: UIViewRepresentable {
         onPlaceHandler(on: view, using: model)
       }
 
-      arSessionViewModel.load = { map, cloudAnchors, shouldUseCloudAnchor in
+      arSessionViewModel.load = { map, cloudAnchors, positioningEngine in
         onLoadHandler(
-          on: view, using: map, with: cloudAnchors, shouldUseCloudAnchor: shouldUseCloudAnchor)
+          on: view, using: map, with: cloudAnchors, positioningEngine: positioningEngine)
       }
 
       arSessionViewModel.toggleDebugSession = { debug in
@@ -180,36 +180,41 @@ extension ARViewContainer {
 
   func onLoadHandler(
     on view: CustomARView, using worldMap: ARWorldMap?, with cloudAnchors: [CloudARAnchor]?,
-    shouldUseCloudAnchor: Bool
+    positioningEngine: PositioningEngineType
   ) {
     view.removePreviosAnchors()
     let configuration = ARView.configuration()
-    if shouldUseCloudAnchor {
-      uiViewModel.notify(
-        title: "Using cloud anchor", subtitle: "Number of anchors: \(cloudAnchors?.count ?? 0)")
-      if let cloudAnchors = cloudAnchors {
-        self.arSessionViewModel.loadedCloudAnchors = cloudAnchors
+    switch positioningEngine {
+      case .defaultEngine:
+        guard let map = arViewModel.currentWorldMap?.map else {
+          uiViewModel.notify(title: "Cannot load world map", subtitle: "Map is nil")
+          return
+        }
+        logger.info("Using worldmap")
+        configuration.initialWorldMap = map
         view.session.run(
-          configuration,
-          options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
-        let anchorsWithIds = cloudAnchors.filter { anchor in
-          anchor.hostId != nil
-        }
-        for anchor in anchorsWithIds {
-          _ = try! self.arSessionViewModel.gSession?.resolveCloudAnchor(anchor.hostId!)
-          logger.info("Resolving cloud anchor \(anchor.hostId!)")
-        }
-      }
-    } else {
-      guard let map = arViewModel.currentWorldMap?.map else {
-        uiViewModel.notify(title: "Cannot load world map", subtitle: "Map is nil")
+          configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+        uiViewModel.notify(title: "Map is loaded", subtitle: map.subtitle)
         return
-      }
-      logger.info("Using worldmap")
-      configuration.initialWorldMap = map
-      view.session.run(
-        configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
-      uiViewModel.notify(title: "Map is loaded", subtitle: map.subtitle)
+      case .cloudAnchor:
+        uiViewModel.notify(
+          title: "Using cloud anchor", subtitle: "Number of anchors: \(cloudAnchors?.count ?? 0)")
+        if let cloudAnchors = cloudAnchors {
+          self.arSessionViewModel.loadedCloudAnchors = cloudAnchors
+          view.session.run(
+            configuration,
+            options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+          let anchorsWithIds = cloudAnchors.filter { anchor in
+            anchor.hostId != nil
+          }
+          for anchor in anchorsWithIds {
+            _ = try! self.arSessionViewModel.gSession?.resolveCloudAnchor(anchor.hostId!)
+            logger.info("Resolving cloud anchor \(anchor.hostId!)")
+          }
+        }
+        return
+      default:
+        uiViewModel.notify(title: "Positioning Engine not support yet", subtitle: "Given engine \(positioningEngine)")
     }
 
   }
