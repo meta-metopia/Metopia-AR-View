@@ -22,13 +22,11 @@ public typealias Load = (ARWorldMap?, [CloudARAnchor]?, PositioningEngineType) -
 public typealias AddModel = ((ModelWithEntity) -> Void)
 /// This function will be called by ARSessionDelegate
 public typealias OnPlaceModel = ((ModelAnchor) -> Void)
-/// Enable debug session
-public typealias ToggleDebugSession = (Bool) -> Void
-
+/// On model deletion
 public typealias OnDelete = (String) -> Void
-
+/// On cloud anchor resolved
 public typealias OnAnchorResolved = (ARAnchor, String) -> Void
-
+/// On Image taken
 public typealias OnImageCapture = () async throws -> UIImage
 
 public class ARSessionViewModel: ObservableObject {
@@ -37,7 +35,6 @@ public class ARSessionViewModel: ObservableObject {
   @Published public var addModel: AddModel!
   @Published public var preSave: PreSave!
   @Published public var load: Load!
-  @Published public var toggleDebugSession: ToggleDebugSession!
   @Published public var onDelete: OnDelete!
   @Published public var save: Save!
   @Published public var onAnchorResolved: OnAnchorResolved!

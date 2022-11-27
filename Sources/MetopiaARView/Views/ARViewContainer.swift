@@ -20,20 +20,24 @@ public struct ARViewContainer: UIViewRepresentable {
   @EnvironmentObject var arSessionViewModel: ARSessionViewModel
 
   let isCreationMode: Bool
+  let settings: [ARSettings]
   let onPreSave: OnPreSave
 
   /**
    Create a ar view for swift ui
    - parameter onSave: Callback function whenever model has been saved
+   - parameter settings: List of ar settings.
+   - parameter isCreationMode: Boolean value indicates whether the AR View is in the creation mode. If false, some functionalities will be disabled.
    */
   public init(
     isCreationMode: Bool = true, uiViewModel: any UIViewModelProtocol,
-    arViewModel: any ARViewModelProtocol, onPreSave: @escaping OnPreSave
+    arViewModel: any ARViewModelProtocol,settings: [ARSettings] = [] ,onPreSave: @escaping OnPreSave
   ) {
     self.onPreSave = onPreSave
     self.isCreationMode = isCreationMode
     self.uiViewModel = uiViewModel
     self.arViewModel = arViewModel
+    self.settings = settings
   }
 
   public func makeUIView(context: Context) -> CustomARView {
@@ -48,16 +52,12 @@ public struct ARViewContainer: UIViewRepresentable {
     view.enableDeletion()
     view.enableOnTapGesture()
     view.addCoaching()
-    view.environment.sceneUnderstanding.options.insert(.occlusion)
     
     view.session.delegate = context.coordinator
-
     arSessionViewModel.gSession?.delegate = context.coordinator
-
-    let configuration = ARView.configuration()
-    view.session.run(
-      configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
-
+    
+    view.configView(using: settings)
+    
     DispatchQueue.main.async {
       arSessionViewModel.addModel = { model in
         onAddHandler(on: view, using: model)
@@ -70,10 +70,6 @@ public struct ARViewContainer: UIViewRepresentable {
       arSessionViewModel.load = { map, cloudAnchors, positioningEngine in
         onLoadHandler(
           on: view, using: map, with: cloudAnchors, positioningEngine: positioningEngine)
-      }
-
-      arSessionViewModel.toggleDebugSession = { debug in
-        onToggleDebugSessionHandler(on: view, should: debug)
       }
 
       arSessionViewModel.onDelete = { anchor in
@@ -115,6 +111,7 @@ public struct ARViewContainer: UIViewRepresentable {
   }
 
   public func updateUIView(_ uiView: CustomARView, context: Context) {
+    uiView.configView(using: settings)
   }
 }
 
@@ -183,7 +180,6 @@ extension ARViewContainer {
     positioningEngine: PositioningEngineType
   ) {
     view.removePreviosAnchors()
-    let configuration = ARView.configuration()
     switch positioningEngine {
       case .defaultEngine:
         guard let map = arViewModel.currentWorldMap?.map else {
@@ -191,9 +187,7 @@ extension ARViewContainer {
           return
         }
         logger.info("Using worldmap")
-        configuration.initialWorldMap = map
-        view.session.run(
-          configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+        view.configView(using: settings, map: map)
         uiViewModel.notify(title: "Map is loaded", subtitle: map.subtitle)
         return
       case .cloudAnchor:
@@ -201,9 +195,7 @@ extension ARViewContainer {
           title: "Using cloud anchor", subtitle: "Number of anchors: \(cloudAnchors?.count ?? 0)")
         if let cloudAnchors = cloudAnchors {
           self.arSessionViewModel.loadedCloudAnchors = cloudAnchors
-          view.session.run(
-            configuration,
-            options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+          view.configView(using: settings)
           let anchorsWithIds = cloudAnchors.filter { anchor in
             anchor.hostId != nil
           }
@@ -217,18 +209,6 @@ extension ARViewContainer {
         uiViewModel.notify(title: "Positioning Engine not support yet", subtitle: "Given engine \(positioningEngine)")
     }
 
-  }
-
-  func onToggleDebugSessionHandler(on view: CustomARView, should debug: Bool) {
-    if debug {
-      ARView.getDebugOptions().forEach { option in
-        view.debugOptions.insert(option)
-      }
-    } else {
-      ARView.getDebugOptions().forEach { option in
-        view.debugOptions.remove(option)
-      }
-    }
   }
 
   func onSaveHandler(on view: CustomARView, using anchors: [ARAnchor]) {

@@ -59,17 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maxxfrazer/FocusEntity",
       "state" : {
-        "branch" : "main",
-        "revision" : "ced786adbfd91d701316c369bd52f023f681733b"
-      }
-    },
-    {
-      "identity" : "functions-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/supabase-community/functions-swift",
-      "state" : {
-        "branch" : "main",
-        "revision" : "bdaf7b34ab7bc25b4aa8092fc384367d8ae7a11f"
+        "revision" : "ced786adbfd91d701316c369bd52f023f681733b",
+        "version" : "2.3.0"
       }
     },
     {
@@ -158,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MetaMetopia/Metopia-AR-Creator-Common",
       "state" : {
-        "branch" : "main",
-        "revision" : "a4bbbc5f3cd0aee9cad16bc754803e2e48a4d216"
+        "revision" : "5094f6444632b2ed65dc7da5852a58b331b3a90d",
+        "version" : "1.0.4"
       }
     },
     {
@@ -176,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/postgrest-swift",
       "state" : {
-        "branch" : "master",
-        "revision" : "bdfefaccca603cf03899804e4a4b5ecf5c62447e"
+        "revision" : "e949f57873118a44f301e4e6fee739ea589f6e7f",
+        "version" : "0.0.6"
       }
     },
     {
@@ -203,8 +194,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase-community/storage-swift.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "04703e499ca258899d7ad45717efe75b8ddc09ab"
+        "revision" : "04703e499ca258899d7ad45717efe75b8ddc09ab",
+        "version" : "0.1.0"
       }
     },
     {
@@ -212,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "9b4880a3d040ebe75064a85d556d70cb2e99c691"
+        "revision" : "169ea4140473e0d9de5433ce25b051e56c3f6767",
+        "version" : "0.0.11"
       }
     },
     {
@@ -248,8 +239,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/danielsaidi/WebViewKit",
       "state" : {
-        "branch" : "main",
-        "revision" : "2d47276bf9da73a653e8f95b018cf037be96dff0"
+        "revision" : "02f6ccd31681d376d7f2536c0aa16a9584051caf",
+        "version" : "0.2.1"
       }
     },
     {
