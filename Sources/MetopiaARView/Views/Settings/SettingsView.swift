@@ -43,7 +43,7 @@ public struct SettingsView: View {
     self.onSave = onSave
   }
   
-  var body: some View {
+  public var body: some View {
     Form {
       Section("AR settings") {
         ForEach($settings) { (setting: Binding<UserSelectedSetting>) in
