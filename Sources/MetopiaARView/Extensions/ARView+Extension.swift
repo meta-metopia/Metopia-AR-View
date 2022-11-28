@@ -48,7 +48,7 @@ extension ARView {
    - parameter settings: List of ar settings
    - parameter map: Previous saved ar world map
    */
-  func configView(using settings: [ARSettings], map: ARWorldMap? = nil) {
+  func configView(using settings: [ARSettings], map: ARWorldMap? = nil, isUpate: Bool = false) {
     let configuration = configuration(settings: settings)
     
     if settings.contains(ARSettings.objectOcclusion) {
@@ -64,10 +64,15 @@ extension ARView {
         self.debugOptions.remove(option)
       }
     }
-    
-    // run settings
-    self.session.run(
-      configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+    if isUpate {
+      // run settings
+      self.session.run(
+        configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
+      
+    } else {
+      self.session.run(
+        configuration, options: [])
+    }
   }
   
   private func getDebugOptions() -> [DebugOptions] {
