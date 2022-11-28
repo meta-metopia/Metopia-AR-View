@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MetaMetopia/Metopia-AR-Creator-Common",
       "state" : {
-        "revision" : "5094f6444632b2ed65dc7da5852a58b331b3a90d",
-        "version" : "1.0.4"
+        "revision" : "f71fdc0e0a81f3351bf3691a681637a8b0c41b36",
+        "version" : "1.0.5"
       }
     },
     {
