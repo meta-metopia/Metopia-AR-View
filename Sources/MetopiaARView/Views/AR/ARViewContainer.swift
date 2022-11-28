@@ -242,7 +242,7 @@ extension ARViewContainer {
   }
   
   public func onARSettingsUpdate(settings: [ARSettings], on view: CustomARView) {
-    view.configView(using: settings)
+    view.configView(using: settings, isUpate: true)
   }
 
 }
