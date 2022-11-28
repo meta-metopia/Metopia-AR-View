@@ -67,11 +67,10 @@ extension ARView {
     if isUpate {
       // run settings
       self.session.run(
-        configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
-      
+        configuration, options: [])
     } else {
       self.session.run(
-        configuration, options: [])
+        configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction])
     }
   }
   
