@@ -28,6 +28,8 @@ public typealias OnDelete = (String) -> Void
 public typealias OnAnchorResolved = (ARAnchor, String) -> Void
 /// On Image taken
 public typealias OnImageCapture = () async throws -> UIImage
+/// Update settings
+public typealias OnARSettingsUpdate = ([ARSettings]) -> Void
 
 public class ARSessionViewModel: ObservableObject {
   //    @Published var resolveAnchors: ResolveAnchors!
@@ -39,6 +41,8 @@ public class ARSessionViewModel: ObservableObject {
   @Published public var save: Save!
   @Published public var onAnchorResolved: OnAnchorResolved!
   @Published public var onImageCapture: OnImageCapture!
+  @Published public var onARSettingsUpdate: OnARSettingsUpdate!
+  
   @Published public var arState: ARCamera.TrackingState = .notAvailable {
     didSet {
       switch arState {

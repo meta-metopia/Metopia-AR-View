@@ -91,6 +91,10 @@ public struct ARViewContainer: UIViewRepresentable {
       arSessionViewModel.onAnchorResolved = { anchor, hostedId in
         onAnchorResolvedHandler(on: view, using: anchor, with: hostedId)
       }
+      
+      arSessionViewModel.onARSettingsUpdate = { settings in
+        onARSettingsUpdate(settings: settings, on: view)
+      }
 
       arSessionViewModel.onImageCapture = {
         return try await withCheckedThrowingContinuation { cont in
@@ -111,7 +115,6 @@ public struct ARViewContainer: UIViewRepresentable {
   }
 
   public func updateUIView(_ uiView: CustomARView, context: Context) {
-    uiView.configView(using: settings)
   }
 }
 
@@ -236,6 +239,10 @@ extension ARViewContainer {
     let data = try NSKeyedArchiver.archivedData(
       withRootObject: worldMap, requiringSecureCoding: true)
     try data.write(to: url)
+  }
+  
+  public func onARSettingsUpdate(settings: [ARSettings], on view: CustomARView) {
+    view.configView(using: settings)
   }
 
 }
