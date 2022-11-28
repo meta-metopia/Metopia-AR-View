@@ -23,7 +23,7 @@ public struct SettingsView: View {
   /**
    Initialize settings view without default settings
    */
-  init(onSave: @escaping OnSettingsSave) {
+  public init(onSave: @escaping OnSettingsSave) {
     let defaultSettings = ARSettings.allCases.map { setting in
       UserSelectedSetting(setting: setting, isSelected: false)
     }
@@ -35,7 +35,7 @@ public struct SettingsView: View {
    Initialize settings view using default settings
    - parameter settings: Default settings
    */
-  init(settings: [ARSettings], onSave: @escaping OnSettingsSave) {
+  public init(settings: [ARSettings], onSave: @escaping OnSettingsSave) {
     let defaultSettings = ARSettings.allCases.map { setting in
       UserSelectedSetting(setting: setting, isSelected: settings.contains(setting))
     }
