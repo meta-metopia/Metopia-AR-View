@@ -47,11 +47,16 @@ public struct SettingsView: View {
     Form {
       Section("AR settings") {
         ForEach($settings) { (setting: Binding<UserSelectedSetting>) in
-          Toggle(isOn: setting.isSelected) {
-            HStack {
-              Image(systemName: setting.wrappedValue.setting.icon)
-              Text("\(setting.wrappedValue.setting.rawValue)")
+          VStack(alignment: .leading) {
+            Toggle(isOn: setting.isSelected) {
+              HStack {
+                Image(systemName: setting.wrappedValue.setting.icon)
+                Text("\(setting.wrappedValue.setting.rawValue)")
+              }
             }
+            Text(setting.wrappedValue.setting.description)
+              .font(.footnote)
+              .foregroundColor(Color.gray)
           }
         }
       }
