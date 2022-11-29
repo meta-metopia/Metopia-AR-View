@@ -18,7 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
       .package(url: "https://github.com/sirily11/ARCore", from: "1.34.0"),
-      .package(url: "https://github.com/MetaMetopia/Metopia-AR-Creator-Common", exact: "1.0.5"),
+      .package(url: "https://github.com/MetaMetopia/Metopia-AR-Creator-Common", exact: "1.0.6"),
       .package(url: "https://github.com/maxxfrazer/FocusEntity", exact: "2.3.0"),
       .package(url: "https://github.com/danielsaidi/WebViewKit", exact: "0.2.1")
     ],
