@@ -14,7 +14,11 @@ import MetopiaARCreatorCommon
 extension ARView {
    private func configuration(settings: [ARSettings]) -> ARWorldTrackingConfiguration {
     let configuration = ARWorldTrackingConfiguration()
-    configuration.environmentTexturing = .automatic
+     if (settings.contains(ARSettings.environmentLighting)) {
+       configuration.environmentTexturing = .automatic
+     } else {
+       configuration.environmentTexturing = .none
+     }
     
     if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) && settings.contains(ARSettings.personSegmentation) {
       configuration.frameSemantics.insert(.personSegmentationWithDepth)
